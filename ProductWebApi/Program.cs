@@ -7,6 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // my code
 builder.Services.AddDbContext<MyContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("D")));
+
+builder.Services.AddCors(cors => cors.AddPolicy("myPolicy", policy =>
+{
+    policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+}));
 // end my code
 
 builder.Services.AddControllers();
@@ -23,6 +28,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("myPolicy");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
